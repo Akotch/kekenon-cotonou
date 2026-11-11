@@ -25,21 +25,25 @@ A 30-second demo video with sound is in [`media/kekenon-demo.mp4`](media/kekenon
 |---|---|---|
 | Walk | `W A S D` or arrow keys | Joystick |
 | Run | `Shift` | Hold **RUN / BRAKE** |
-| Get on / off the moto | `E` (stand next to it) | **MOTO** button |
+| Get on / off, or take any moto or car | `E` (stand next to it) | **MOTO** button |
 | Throttle, brake, steer | `W` `S` `A` `D` | Joystick |
 | Hard brake | `Shift` or `Space` | Hold **RUN / BRAKE** |
-| Horn | `H` | 📯 button |
+| Horn (traffic ahead speeds up) | `H` | 📯 button |
+| Mission board | `J` | 📋 button |
 | Look around | Drag with the mouse | Drag on the screen |
-| Pause, language, sound | `Esc` | ☰ button |
+| Pause, language, volume, graphics quality | `Esc` | ☰ button |
 
 1. Ride up to a waving passenger and stop next to them.
 2. Follow the green route on the minimap to the green beam and stop inside it.
 3. Fast trips pay a bonus. Bumping into traffic takes a little off the fare.
-4. Refuel at the orange roadside stands. Spend your fares at the Garage (purple square on the minimap).
+4. Open the mission board for bigger jobs: the school run, a market delivery, the port rush and a city tour. Completing missions raises your level and unlocks harder ones.
+5. Spend your fares at the Garage (purple square on the minimap): engine, helmet, a sport moto, paint, shirts and horns. Hire other zem drivers who earn for you, and fund city projects that change the map.
+6. Smooth rides earn star ratings and tips, and there is a daily earnings goal with a bonus.
+7. It is an open world: walk up to any moto or car in traffic and press `E` to push the driver off and take it. Motos reach about 250 km/h, and up to 300 with the Garage upgrades.
 
 Passengers come in four kinds: regular, in a hurry (pays more, but on a timer), market traders (pay more, bumps cost more) and tourists (want a photo stop at the statue first).
 
-The game is available in English and French. Progress is saved in your browser.
+The game is available in English and French, has a day-to-night cycle, and guides you through your first trip. Progress is saved in your browser.
 
 ## The setting
 
@@ -47,11 +51,11 @@ The map follows the real layout around the Esplanade des Amazones: the statue an
 
 ## Run it locally
 
-Download `index.html` and open it in a browser. An internet connection is needed the first time, to load Three.js from a CDN.
+Download `index.html` and `three.min.js` into the same folder and open `index.html` in a browser. If `three.min.js` is missing, the game falls back to loading Three.js from a CDN.
 
 ## How it is made
 
-- One self-contained `index.html` — all code inline, no build step.
+- One `index.html` with all the game code inline, plus the Three.js library file — no build step.
 - [Three.js](https://threejs.org/) r128 for rendering; everything is basic low-poly geometry with flat colours.
 - No external models, textures or audio files: sound is generated in the browser with the Web Audio API.
 - Built with Claude Fable 5.2.
