@@ -17,7 +17,7 @@ No install, no account. Works on a laptop or a phone.
 | ![Red-earth streets and dust](screenshots/shot3.jpg) | ![Fare paid at the market](screenshots/shot4.jpg) |
 | ![The Garage shop](screenshots/shot5.jpg) | ![Sunset on the Boulevard de la Marina](screenshots/shot6.jpg) |
 
-A one-minute demo video is in [`media/kekenon-demo.mp4`](media/kekenon-demo.mp4).
+A 30-second demo video with sound is in [`media/kekenon-demo.mp4`](media/kekenon-demo.mp4) (4K) and [`media/kekenon-demo-1080p.mp4`](media/kekenon-demo-1080p.mp4).
 
 ## How to play
 
