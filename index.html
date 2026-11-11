@@ -643,7 +643,19 @@ function audioInit(){
     const n=c.createBufferSource(); n.buffer=b; n.loop=true; const f=c.createBiquadFilter(); f.type='lowpass'; f.frequency.value=480;
     AU.ag=c.createGain(); AU.ag.gain.value=0; n.connect(f); f.connect(AU.ag); AU.ag.connect(AU.master); n.start();
   }catch(e){ AU.ctx=null; }
+  audioUnlock();
 }
+// iPhone/iPad: Web Audio starts suspended and is silenced by the ring/silent switch unless the page asks for "playback" audio.
+function audioUnlock(){
+  const c=AU.ctx; if(!c) return;
+  try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
+  if(c.state!=='running'&&c.resume) c.resume().catch(()=>{});
+  if(!navigator.audioSession&&/iP(hone|ad|od)|Macintosh/.test(navigator.userAgent)&&'ontouchstart' in window){   // older iOS: a silent looping track switches the audio channel
+    if(!AU.tag){ AU.tag=document.createElement('audio'); AU.tag.loop=true; AU.tag.setAttribute('playsinline',''); AU.tag.src='data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=='; }
+    if(AU.tag.paused){ const p=AU.tag.play(); if(p&&p.catch) p.catch(()=>{}); }
+  }
+}
+for(const ev of ['pointerdown','touchend','keydown','click']) addEventListener(ev,audioUnlock,{passive:true});
 function tone(freq,dur,type='sine',vol=.2,when=0,slide=0){
   const c=AU.ctx; if(!c) return;
   const o=c.createOscillator(), g=c.createGain(), t=c.currentTime+when;
@@ -959,7 +971,7 @@ $('play').addEventListener('click',()=>{
   started=true; $('start').classList.remove('show'); document.body.classList.add('on');
   audioInit(); updateMoney(); toast(tr('hello'));
 });
-addEventListener('visibilitychange',()=>{ if(document.hidden){ save(); if(started&&!$('shop').classList.contains('show')) setPause(true); } });
+addEventListener('visibilitychange',()=>{ if(!document.hidden) audioUnlock(); if(document.hidden){ save(); if(started&&!$('shop').classList.contains('show')) setPause(true); } });
 applyLang(); updatePlayer(0); tick();
 })();
 </script>
